@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Khodam Kamu</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #3f5efb, #fc466b);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 40px 0;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 320px;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    input {
+      text-align: center;
+    }
+
+    button {
+      background-color: #ff6b81;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff4c61;
+    }
+
+    #hasil {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: fadeIn 1s ease;
+    }
+
+    #sifat {
+      margin-top: 10px;
+      font-size: 1rem;
+      font-style: italic;
+      color: #ffeaea;
+    }
+
+    .table-container {
+      width: 80%;
+      max-width: 700px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+      overflow-y: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .scrollable {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+
+    td {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    caption {
+      caption-side: top;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Cek Khodam Kamu 🐉</h2>
+    <input type="text" id="nama" placeholder="Masukkan nama kamu">
+    <button onclick="cekKhodam()">Lihat Khodam</button>
+    <div id="hasil"></div>
+    <div id="sifat"></div>
+  </div>
+
+  <div class="table-container" id="tableWrapper">
+    <table id="tabelRiwayat">
+      <caption>📜 Riwayat Pengecekan Khodam</caption>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Khodam</th>
+          <th>Sifat</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    function cekKhodam() {
+      const namaInput = document.getElementById("nama");
+      const nama = namaInput.value.trim();
+
+      if (nama === "") {
+        alert("Masukkan nama terlebih dahulu!");
+        return;
+      }
+
+      const daftarKhodam = [
+        "Harimau Putih", "Naga Merah", "Macan Kumbang", "Elang Emas", "Kuda Petir",
+        "Serigala Hitam", "Garuda Sakti", "Buaya Putih", "Macan Loreng", "Rajawali Biru",
+        "Ular Perak", "Singa Langit", "Gajah Biru", "Kijang Api", "Kuda Sembrani",
+        "Naga Air", "Merpati Hitam", "Harimau Jawa", "Lelembut Penjaga", "Roh Bambu Kuning",
+        "Burung Phoenix", "Rusa Cahaya", "Anjing Penjaga Alam", "Kelelawar Malam",
+        "Roh Angin Timur", "Kucing Hitam Sakti", "Buaya Emas", "Naga Putih", "Roh Penuntun Cahaya", "Singa Hitam"
+      ];
+
+      const sifatKhodam = [
+        "Berani dan tangguh dalam menghadapi rintangan.",
+        "Bijaksana dan melindungi orang di sekitarnya.",
+        "Cepat, sigap, dan penuh strategi.",
+        "Tenang tapi mematikan jika terancam.",
+        "Pemberani dan selalu menjaga keseimbangan.",
+        "Misterius namun setia kepada tuannya.",
+        "Berjiwa pemimpin dan membawa keberuntungan.",
+        "Kuat, tangguh, dan tak mudah menyerah.",
+        "Memiliki aura ketenangan dan kekuatan spiritual tinggi.",
+        "Penuh energi positif dan pembawa rezeki.",
+        "Cerdas dan penuh intuisi dalam mengambil keputusan.",
+        "Tenang di luar, tapi memiliki kekuatan besar di dalam.",
+        "Pandai melindungi dan menenangkan hati manusia.",
+        "Setia dan tak pernah meninggalkan tuannya.",
+        "Penyembuh alami bagi hati yang terluka.",
+        "Selalu hadir saat tuannya berada dalam bahaya.",
+        "Kreatif dan membawa inspirasi bagi sekitarnya.",
+        "Berjiwa bebas dan mencintai kedamaian.",
+        "Memiliki kekuatan spiritual yang sangat dalam.",
+        "Membawa keberuntungan dan perlindungan dari energi negatif.",
+        "Suka menolong dan memiliki hati yang lembut.",
+        "Peka terhadap perasaan orang lain.",
+        "Mampu memprediksi bahaya sebelum datang.",
+        "Disiplin dan berkomitmen tinggi pada tujuan.",
+        "Tegas, jujur, dan pantang mundur.",
+        "Penyabar namun berbahaya bila dilecehkan.",
+        "Pandai membaca situasi dan memanfaatkan peluang.",
+        "Kharismatik dan mampu memimpin banyak jiwa.",
+        "Menjaga keseimbangan antara dunia nyata dan gaib.",
+        "Berpikir tajam, selalu siap menghadapi masa depan."
+      ];
+
+      // buat seed berdasarkan nama agar hasil konsisten per nama
+      const seed = nama.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+      const khodam = daftarKhodam[seed % daftarKhodam.length];
+      const sifat = sifatKhodam[seed % sifatKhodam.length];
+
+      document.getElementById("hasil").innerText = "Khodam kamu adalah: 🐉 " + khodam;
+      document.getElementById("sifat").innerText = sifat;
+
+      simpanRiwayat(nama, khodam, sifat);
+      bacaSuara(nama, khodam, sifat);
+      namaInput.value = "";
+    }
+
+    function simpanRiwayat(nama, khodam, sifat) {
+      const tabel = document.querySelector("#tabelRiwayat tbody");
+      const wrapper = document.getElementById("tableWrapper");
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${nama}</td>
+        <td>${khodam}</td>
+        <td>${sifat}</td>
+      `;
+      tabel.insertBefore(row, tabel.firstChild);
+
+      if (tabel.rows.length > 2) {
+        wrapper.classList.add("scrollable");
+      }
+    }
+
+    function bacaSuara(nama, khodam, sifat) {
+      const text = `Halo ${nama}. Khodam kamu adalah ${khodam}. ${sifat}`;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "id-ID";
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
